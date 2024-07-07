@@ -1,5 +1,6 @@
 package com.springbootmongodb.controllers;
 
+import com.springbootmongodb.domain.Post;
 import com.springbootmongodb.domain.User;
 import com.springbootmongodb.dto.UserDTO;
 import com.springbootmongodb.services.UserService;
@@ -52,5 +53,11 @@ public class UserController {
         obj.setId(id);
         userService.update(obj);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/posts")
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+        User obj = userService.findById(id);
+        return ResponseEntity.ok().body(obj.getPosts());
     }
 }
