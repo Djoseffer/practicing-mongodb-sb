@@ -1,5 +1,6 @@
 package com.springbootmongodb.controllers;
 
+import com.springbootmongodb.domain.Post;
 import com.springbootmongodb.domain.User;
 import com.springbootmongodb.dto.UserDTO;
 import com.springbootmongodb.services.UserService;
@@ -44,5 +45,19 @@ public class UserController {
     public ResponseEntity<Void> delete(@PathVariable String id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable String id, @RequestBody UserDTO objDto) {
+        User obj = userService.fromDto(objDto);
+        obj.setId(id);
+        userService.update(obj);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/posts")
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+        User obj = userService.findById(id);
+        return ResponseEntity.ok().body(obj.getPosts());
     }
 }
